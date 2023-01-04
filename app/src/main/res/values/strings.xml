@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">NowPlayer</string>
+    <string name="menu_title_main">Main</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+
+    <!-- Preference Titles -->
+    <string name="music_header">Music</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+</resources>

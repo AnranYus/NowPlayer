@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recyclerview_music"/>
+
+
+
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:orientation="vertical"-->
+<!--            android:layout_height="match_parent">-->
+<!--            <androidx.coordinatorlayout.widget.CoordinatorLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent">-->
+
+<!--                &lt;!&ndash; 中间主要内容 &ndash;&gt;-->
+
+
+
+
+
+<!--                &lt;!&ndash; 底部进度条&ndash;&gt;-->
+
+<!--                &lt;!&ndash; 导航条 &ndash;&gt;-->
+
+
+
+<!--            </androidx.coordinatorlayout.widget.CoordinatorLayout>-->
+
+<!--        </LinearLayout>-->
+
+</LinearLayout>
