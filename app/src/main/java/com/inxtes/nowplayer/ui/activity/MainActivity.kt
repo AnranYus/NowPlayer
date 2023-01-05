@@ -8,6 +8,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.inxtes.nowplayer.App
@@ -41,8 +42,11 @@ class MainActivity : BaseActivity() {
                 R.id.main_page -> {
                     viewPager.currentItem = 0
                 }
-                R.id.setting_page -> {
+                R.id.player_page -> {
                     viewPager.currentItem = 1
+                }
+                R.id.setting_page -> {
+                    viewPager.currentItem = 2
                 }
             }
 
