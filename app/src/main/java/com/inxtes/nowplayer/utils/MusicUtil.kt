@@ -9,7 +9,7 @@ import com.inxtes.nowplayer.bean.Music
 import java.io.File
 
 
-object FileUtil {
+object MusicUtil {
     val TAG = this::class.simpleName
 
     fun getMusicInMediaStore(context:Context): ArrayList<Music> {

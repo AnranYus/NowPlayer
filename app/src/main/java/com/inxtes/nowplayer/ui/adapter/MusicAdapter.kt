@@ -1,20 +1,18 @@
 package com.inxtes.nowplayer.ui.adapter
 
-import android.media.Image
-import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
 import com.inxtes.nowplayer.App
 import com.inxtes.nowplayer.R
 import com.inxtes.nowplayer.bean.Music
 import com.inxtes.nowplayer.ui.activity.MainActivity
-import com.inxtes.nowplayer.utils.FileUtil
+import com.inxtes.nowplayer.utils.MusicUtil
 
 class MusicAdapter(private val context:MainActivity) : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
     private val TAG = this::class.simpleName
@@ -22,7 +20,7 @@ class MusicAdapter(private val context:MainActivity) : RecyclerView.Adapter<Musi
 
     init {
         //初始化音乐列表
-        dataList = FileUtil.getMusicInMediaStore(App.context)
+        dataList = MusicUtil.getMusicInMediaStore(App.context)
     }
 
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
@@ -35,18 +33,18 @@ class MusicAdapter(private val context:MainActivity) : RecyclerView.Adapter<Musi
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemLayout =LayoutInflater.from(parent.context).inflate(R.layout.item_music_layout,parent,false)
-        val viewHolder = ViewHolder(itemLayout)
-        viewHolder.musicItem.setOnClickListener {
-            context.viewPager.currentItem = 1
-        }
-        return viewHolder
+        val itemLayout =
+            LayoutInflater.from(parent.context).inflate(R.layout.item_music_layout, parent, false)
+        return ViewHolder(itemLayout)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.musicTitle.text = dataList[position].title
         holder.musicArtist.text = dataList[position].artist
         holder.musicSize.text = dataList[position].length.toString()
+        holder.musicItem.setOnClickListener {
+            context.switchToPlayer(dataList[position])
+        }
 
     }
 

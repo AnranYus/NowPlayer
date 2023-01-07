@@ -12,5 +12,5 @@ object PermissionUtil {
         ContextCompat.checkSelfPermission(App.context,permission) == PackageManager.PERMISSION_GRANTED
 
     fun haveReadAndWriteExternalPermission() =
-        have(Manifest.permission.READ_EXTERNAL_STORAGE) && have(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        have(Manifest.permission.READ_EXTERNAL_STORAGE)
 }

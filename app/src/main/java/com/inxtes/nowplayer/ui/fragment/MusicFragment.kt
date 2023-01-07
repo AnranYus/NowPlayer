@@ -12,7 +12,7 @@ import com.inxtes.nowplayer.databinding.FragmentMusicBinding
 import com.inxtes.nowplayer.ui.activity.MainActivity
 import com.inxtes.nowplayer.ui.adapter.MusicAdapter
 
-class MusicFragment:Fragment() {
+class MusicFragment():Fragment() {
     private val TAG = this::class.simpleName
     private lateinit var binding: FragmentMusicBinding
 
