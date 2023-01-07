@@ -21,16 +21,9 @@ class PlayerService : Service() {
         return binder
     }
 
-    override fun onCreate() {
-        super.onCreate()
-        Log.e(TAG,"OnCreate")
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        mediaPlayer.stop()
-        mediaPlayer.release()
-        Log.e(TAG,"Stop!")
+        binder.stop()
     }
 
     inner class PlayerBinder : Binder(){
@@ -42,15 +35,15 @@ class PlayerService : Service() {
 
             //如果存在正在播放的音乐，则停止
             if (this@PlayerService::mediaPlayer.isInitialized){
-                stop(mediaPlayer)
-            }
-
-            mediaPlayer = MediaPlayer().apply {
-                setAudioAttributes(
-                    AudioAttributes.Builder()
-                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                        .build()
-                )
+                mediaPlayer.reset()
+            }else {
+                mediaPlayer = MediaPlayer().apply {
+                    setAudioAttributes(
+                        AudioAttributes.Builder()
+                            .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                            .build()
+                    )
+                }
             }
 
 
@@ -63,11 +56,19 @@ class PlayerService : Service() {
             return mediaPlayer
         }
 
-        fun stop(mediaPlayer: MediaPlayer){
+        fun stop(){
 
             mediaPlayer.stop()
             mediaPlayer.release()
 
+        }
+
+        fun pause(){
+            mediaPlayer.stop()
+        }
+
+        fun resume(){
+            mediaPlayer.start()
         }
     }
 
