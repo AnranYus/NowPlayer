@@ -43,7 +43,8 @@ class MainActivity : BaseActivity() {
 
 
         val intent = Intent(this, PlayerService::class.java)
-        bindService(intent,connection, Context.BIND_AUTO_CREATE)
+        startService(intent)
+        bindService(intent,connection,Context.BIND_AUTO_CREATE)
 
         pageAdapter = FragmentAdapter(this)
         viewPager = binding.viewpager
