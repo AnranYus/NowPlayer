@@ -7,6 +7,7 @@
     tools:context=".ui.activity.MainActivity">
 
 
+
     <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -20,5 +21,18 @@
         android:id="@+id/bottom_navigation"
         app:menu="@menu/navigation_menu"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="start"
+        android:layout_gravity="start"
+        android:id="@+id/start"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+
+        android:text="stop"
+        android:id="@+id/stop"/>
 
 </FrameLayout>

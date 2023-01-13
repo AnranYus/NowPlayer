@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId "com.inxtes.nowplayer"
-        minSdk 31
+        minSdk 30
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -36,9 +36,8 @@ android {
 }
 
 dependencies {
-    implementation("org:jaudiotagger:2.0.3")
     implementation("androidx.fragment:fragment-ktx:1.5.5")
-
+    implementation("androidx.media:media:1.6.0")
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'

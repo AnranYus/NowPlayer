@@ -1,5 +1,6 @@
 package com.inxtes.nowplayer.ui.adapter
 
+import android.support.v4.media.MediaBrowserCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +12,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.inxtes.nowplayer.App
 import com.inxtes.nowplayer.R
 import com.inxtes.nowplayer.bean.Music
+import com.inxtes.nowplayer.provider.MusicProvider
 import com.inxtes.nowplayer.ui.activity.MainActivity
-import com.inxtes.nowplayer.utils.MusicUtil
 
 class MusicAdapter(private val context:MainActivity) : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
     private val TAG = this::class.simpleName
-    private var dataList:ArrayList<Music> = ArrayList()
-
-    init {
-        //初始化音乐列表
-        dataList = MusicUtil.getMusicInMediaStore(App.context)
-    }
+    private var dataList:MutableList<MediaBrowserCompat.MediaItem> = MusicProvider.requestMusic(context)
 
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val musicImage:ImageView = view.findViewById<ImageView>(R.id.music_image)
@@ -39,11 +35,11 @@ class MusicAdapter(private val context:MainActivity) : RecyclerView.Adapter<Musi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.musicTitle.text = dataList[position].title
-        holder.musicArtist.text = dataList[position].artist
-        holder.musicSize.text = dataList[position].length.toString()
+        holder.musicTitle.text = dataList[position].description.title
+        holder.musicArtist.text = dataList[position].description.extras?.getString("artist")
+//        holder.musicSize.text = dataList[position].length.toString()
         holder.musicItem.setOnClickListener {
-            context.switchToPlayer(dataList[position])
+            dataList[position].mediaId?.let { it1 -> context.switchToPlayer(it1) }
         }
 
     }
@@ -52,9 +48,5 @@ class MusicAdapter(private val context:MainActivity) : RecyclerView.Adapter<Musi
         return dataList.size
     }
 
-    fun addMusic(music:Music){
-        dataList.add(music)
-        notifyItemInserted(dataList.size-1)
-    }
 
 }

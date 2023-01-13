@@ -1,50 +1,69 @@
 package com.inxtes.nowplayer.ui.activity
 
 import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.media.AudioManager
+import android.media.session.MediaController
 import android.os.Bundle
-import android.os.IBinder
+import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaControllerCompat
+import android.support.v4.media.session.PlaybackStateCompat
+import android.util.Log
 import androidx.viewpager2.widget.ViewPager2
 import com.inxtes.nowplayer.R
 import com.inxtes.nowplayer.bean.Music
 import com.inxtes.nowplayer.databinding.ActivityMainBinding
-import com.inxtes.nowplayer.service.PlayerService
+import com.inxtes.nowplayer.service.MusicService
 import com.inxtes.nowplayer.ui.adapter.FragmentAdapter
 import com.inxtes.nowplayer.ui.fragment.PlayerFragment
 
 class MainActivity : BaseActivity() {
     lateinit var viewPager:ViewPager2
     lateinit var binding: ActivityMainBinding
-    lateinit var playerBinder:PlayerService.PlayerBinder
     lateinit var pageAdapter:FragmentAdapter
 
-    private val connection = object :ServiceConnection{
-        override fun onServiceConnected(p0: ComponentName?, p1: IBinder?) {
-            playerBinder = p1 as PlayerService.PlayerBinder
-        }
-
-        override fun onServiceDisconnected(p0: ComponentName?) {
-            TODO("Not yet implemented")
-        }
-
-    }
-
     private val TAG = this::class.simpleName
+    lateinit var mediaBrowser: MediaBrowserCompat
+    lateinit var mediaController:MediaControllerCompat
+
+    lateinit var transportControls:MediaControllerCompat.TransportControls
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        mediaBrowser = MediaBrowserCompat(
+            this,
+            ComponentName(this, MusicService::class.java),
+            connectionCallbacks,
+            null
+        )
+
+
+
 //        val toolbar = findViewById<Toolbar>(R.id.toolbar)
 //        setSupportActionBar(toolbar)
 
 
-        val intent = Intent(this, PlayerService::class.java)
-        startService(intent)
-        bindService(intent,connection,Context.BIND_AUTO_CREATE)
+//        val intent = Intent(this, PlayerService::class.java)
+//        startService(intent)
+//        bindService(intent,connection,Context.BIND_AUTO_CREATE)
+
+        binding.start.setOnClickListener {
+            Log.e(TAG,"start")
+            mediaController.transportControls.play()
+        }
+
+        binding.stop.setOnClickListener {
+            mediaController.transportControls.stop()
+            Log.e(TAG,"stop")
+
+
+        }
+
+        //创建MediaBrowserServiceCompat
 
         pageAdapter = FragmentAdapter(this)
         viewPager = binding.viewpager
@@ -77,14 +96,65 @@ class MainActivity : BaseActivity() {
 
     }
 
+    private val connectionCallbacks = object : MediaBrowserCompat.ConnectionCallback(){
+        override fun onConnected() {
+            super.onConnected()
+
+            mediaBrowser.sessionToken.also { token ->
+                mediaController = MediaControllerCompat(this@MainActivity,token)
+                MediaControllerCompat.setMediaController(this@MainActivity,mediaController)
+            }
+
+            buildTransportControls()
+
+        }
+    }
+
+    fun buildTransportControls(){
+        //注册控制器回调
+        mediaController.registerCallback(controllerCallback)
+        transportControls = mediaController.transportControls
+
+    }
+
+    private val controllerCallback = object : MediaControllerCompat.Callback(){
+        //TODO
+        override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
+            super.onMetadataChanged(metadata)
+        }
+
+        override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
+            Log.e(TAG,"state ${state.toString()}")
+            super.onPlaybackStateChanged(state)
+        }
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        mediaBrowser.connect()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        volumeControlStream = AudioManager.STREAM_MUSIC
+    }
+
+    override fun onStop() {
+        super.onStop()
+        MediaControllerCompat.getMediaController(this)?.unregisterCallback(controllerCallback)
+        mediaBrowser.disconnect()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        unbindService(connection)
     }
 
-    fun switchToPlayer(music: Music) {
+    fun switchToPlayer(mediaId:String) {
         viewPager.currentItem = FragmentAdapter.PLAYER_FRAGMENT
-        pageAdapter.changePlayerFragment(PlayerFragment(music))
+        pageAdapter.changePlayerFragment(PlayerFragment())
 
     }
+
 }

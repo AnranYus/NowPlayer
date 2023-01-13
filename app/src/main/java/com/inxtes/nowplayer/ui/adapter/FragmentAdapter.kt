@@ -14,7 +14,7 @@ class FragmentAdapter(fragment: MainActivity) :FragmentStateAdapter(fragment){
         const val SETTING_FRAGMENT = 2
     }
 
-    private val fragmentList:ArrayList<Fragment> = arrayListOf(MusicFragment(),PlayerFragment(null),SettingFragment())
+    private val fragmentList:ArrayList<Fragment> = arrayListOf(MusicFragment(),PlayerFragment(),SettingFragment())
 
     override fun getItemCount(): Int {
         return fragmentList.size
