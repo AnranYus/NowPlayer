@@ -1,7 +1,6 @@
 package com.inxtes.nowplayer.service
 
 import android.support.v4.media.MediaBrowserCompat
-import android.util.Log
 import com.inxtes.nowplayer.App
 import com.inxtes.nowplayer.provider.MusicProvider
 
@@ -10,18 +9,21 @@ class PlayQueue(order:Int = DEFAULT) {
         val DEFAULT = 1
     }
 
-    private lateinit var queue : MutableList<MediaBrowserCompat.MediaItem>
-
-    init {
-        queue = MusicProvider.requestMusic(App.context)
-    }
+    private var queue : MutableList<MediaBrowserCompat.MediaItem> = MusicProvider.requestMusic(App.context)
 
     var headPosition :Int = 0
 
-    fun getHeadItem():MediaBrowserCompat.MediaItem{
-        val item = queue[headPosition]
-        headPosition++
-        return item
+    fun getHeadItem():MediaBrowserCompat.MediaItem?{
+        return if (headPosition < queue.size) {
+
+            val item = queue[headPosition]
+            headPosition++
+            item
+
+        }else{
+            null
+        }
+
     }
 
 

@@ -59,10 +59,12 @@ object Player{
 
     fun play(mediaSession:MediaSessionCompat){
         val item = queue.getHeadItem()
-        playMusic(item.description.mediaUri)
-        mediaSession.setMetadata(MediaMetadataCompat.Builder()
-            .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID,
-                item.mediaId).build())
+        if (item!=null) {
+            playMusic(item.description.mediaUri)
+            mediaSession.setMetadata(MediaMetadataCompat.Builder()
+                .putString(MediaMetadataCompat.METADATA_KEY_MEDIA_ID,
+                    item.mediaId).build())
+        }
     }
 
     fun stop(){

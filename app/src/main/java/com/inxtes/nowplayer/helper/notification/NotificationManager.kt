@@ -11,10 +11,10 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.media.session.MediaButtonReceiver
-import com.inxtes.nowplayer.App
 import com.inxtes.nowplayer.R
 
-class NotificationManager (sessionToken:MediaSessionCompat.Token,val service: Service){
+class NotificationManager (val sessionToken:MediaSessionCompat.Token, private val service: Service){
+    private val TAG = this::class.simpleName
     private var notificationState = false //通知创建状态
     lateinit var notificationBuilder:NotificationCompat.Builder
     val mediaController = MediaControllerCompat(service,sessionToken)
@@ -34,11 +34,15 @@ class NotificationManager (sessionToken:MediaSessionCompat.Token,val service: Se
     fun showNotify(){
 
         val mediaMetadata = mediaController.metadata
-        val description = mediaMetadata.description
+        if (mediaController.metadata == null){
+            Log.e(TAG,"meta is null")
+        }
+
 
         notificationBuilder = NotificationCompat.Builder(service, channelId).apply {
-            Log.e("manager",description?.title.toString())
-            setContentTitle(description?.title)
+//            Log.e("manager",mediaMetadata.description.title.toString())
+//            setContentTitle(description.extras?.getString("name").toString())
+//            setSubText(description.title)
 
             setContentIntent(mediaController.sessionActivity)
 
@@ -51,21 +55,35 @@ class NotificationManager (sessionToken:MediaSessionCompat.Token,val service: Se
 
             setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
-            setSmallIcon(R.drawable.ic_baseline_next_24)
+            setSmallIcon(R.drawable.ic_baseline_music_note_24)
             color = ContextCompat.getColor(service, androidx.appcompat.R.color.primary_dark_material_dark)
 
-            // Add a pause button
+            // Add a pause/play button
              addAction( NotificationCompat.Action(
-                 R.drawable.pause,
-                 service.getString(R.string.pause),
+                 if (mediaController.playbackState.state == PlaybackStateCompat.STATE_PLAYING)
+                     R.drawable.pause
+                 else
+                     R.drawable.play
+                 ,
+                 service.getString(R.string.pause_play),
                  MediaButtonReceiver.buildMediaButtonPendingIntent(
                      service,
                      PlaybackStateCompat.ACTION_PLAY_PAUSE
                  )
              ))
 
+            //TODO next skip
+            addAction( NotificationCompat.Action(
+                R.drawable.ic_baseline_next_24,
+                service.getString(R.string.play),
+                MediaButtonReceiver.buildMediaButtonPendingIntent(
+                    service,
+                    PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+                )
+            ))
+
             setStyle(androidx.media.app.NotificationCompat.MediaStyle()
-                .setMediaSession(mediaController.sessionToken)
+                .setMediaSession(sessionToken)
                 .setShowActionsInCompactView(0)
                 .setShowCancelButton(true)
                 .setCancelButtonIntent(
