@@ -17,7 +17,6 @@ class PlayQueue(order:Int = DEFAULT) {
         return if (headPosition < queue.size) {
 
             val item = queue[headPosition]
-            headPosition++
             item
 
         }else{
@@ -25,21 +24,6 @@ class PlayQueue(order:Int = DEFAULT) {
         }
 
     }
-
-
-//    private fun playByOrder(){
-//        Log.e("Queue",position.toString())
-//        val mediaPlayer = Player.play(repository[position].description.mediaUri!!)
-//        mediaPlayer.setOnCompletionListener {
-//            position++
-//        }
-//
-////        while (position<repository.size){
-////            Log.e("Queue",position.toString())
-////
-////        }
-//
-//    }
 
 
 

@@ -1,6 +1,7 @@
 package com.inxtes.nowplayer.ui.adapter
 
 import android.support.v4.media.MediaBrowserCompat
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -35,6 +36,7 @@ class MusicAdapter(private val context:MainActivity) : RecyclerView.Adapter<Musi
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        Log.e(TAG,"Size is ${dataList.size}")
         holder.musicTitle.text = dataList[position].description.title
         holder.musicArtist.text = dataList[position].description.extras?.getString("artist")
 //        holder.musicSize.text = dataList[position].length.toString()

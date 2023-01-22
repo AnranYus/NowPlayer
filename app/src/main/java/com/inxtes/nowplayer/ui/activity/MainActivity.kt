@@ -1,9 +1,13 @@
 package com.inxtes.nowplayer.ui.activity
 
 import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.media.AudioManager
 import android.media.session.MediaController
 import android.os.Bundle
+import android.os.IBinder
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaControllerCompat
@@ -13,6 +17,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.inxtes.nowplayer.R
 import com.inxtes.nowplayer.bean.Music
 import com.inxtes.nowplayer.databinding.ActivityMainBinding
+import com.inxtes.nowplayer.provider.MusicProvider
 import com.inxtes.nowplayer.service.MusicService
 import com.inxtes.nowplayer.ui.adapter.FragmentAdapter
 import com.inxtes.nowplayer.ui.fragment.PlayerFragment
@@ -27,6 +32,7 @@ class MainActivity : BaseActivity() {
     lateinit var mediaController:MediaControllerCompat
 
     lateinit var transportControls:MediaControllerCompat.TransportControls
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,7 +100,15 @@ class MainActivity : BaseActivity() {
             }
         })
 
+
+
+
+
     }
+
+
+
+
 
     private val connectionCallbacks = object : MediaBrowserCompat.ConnectionCallback(){
         override fun onConnected() {

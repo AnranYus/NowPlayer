@@ -7,7 +7,7 @@
     <TextView
         android:id="@+id/text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="Hello world"/>
     <FrameLayout
         android:layout_width="match_parent"
@@ -19,8 +19,14 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="100dp"
         android:layout_weight="2"
-        android:id="@+id/control_player"/>
+        android:id="@+id/control_player">
+        <androidx.appcompat.widget.AppCompatSeekBar
+            android:id="@+id/music_pro"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
 
 </LinearLayout>

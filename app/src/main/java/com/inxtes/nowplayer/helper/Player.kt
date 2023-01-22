@@ -1,37 +1,31 @@
-package com.inxtes.nowplayer.bean
+package com.inxtes.nowplayer.helper
 
 import android.media.AudioAttributes
-import android.media.AudioMetadata
-import android.media.MediaDataSource
 import android.media.MediaPlayer
 import android.net.Uri
 import android.support.v4.media.MediaMetadataCompat
-import android.support.v4.media.session.MediaControllerCompat
 import android.support.v4.media.session.MediaSessionCompat
-import android.util.Log
 import com.inxtes.nowplayer.App
 import com.inxtes.nowplayer.service.PlayQueue
 
-object Player{
+class Player{
     private val TAG = this::class.java.simpleName
-    private val mediaPlayer:MediaPlayer by lazy {
+    var engineInitialized = false
+    val mediaPlayer:MediaPlayer by lazy {
         MediaPlayer().apply {
             setAudioAttributes(
                 AudioAttributes.Builder()
                     .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                     .build()
             )
+            engineInitialized = true
         }
     }
-    val PLAYING = 1
-    val STOP = 0
-    val PAUSE = -1
+
 
     val queue : PlayQueue by lazy {
         PlayQueue()
     }
-
-    var playerState = STOP//播放器状态
 
 
     /**
@@ -50,11 +44,23 @@ object Player{
                 mediaPlayer.start()
             }
             mediaPlayer.prepareAsync()
-            playerState = PLAYING
         }else{
             //TODO 空URI异常
         }
 
+    }
+    fun playToNext(mediaSession: MediaSessionCompat){
+        queue.headPosition++
+        play(mediaSession)
+
+    }
+
+    interface OnPlaybackPositionChange{
+        fun onPositionChange()
+    }
+
+    fun setOnMusicPlaybackPositionListener(onPlaybackPositionChange: OnPlaybackPositionChange){
+        onPlaybackPositionChange.onPositionChange()
     }
 
     fun play(mediaSession:MediaSessionCompat){
@@ -68,20 +74,20 @@ object Player{
     }
 
     fun stop(){
-        mediaPlayer.stop()
-        mediaPlayer.release()
-        playerState = STOP
+        if (engineInitialized) {
+            mediaPlayer.stop()
+            mediaPlayer.release()
+        }
+
     }
 
     fun pause(){
         mediaPlayer.pause()
-        playerState = PAUSE
 
     }
 
     fun resume(){
         mediaPlayer.start()
-        playerState = PLAYING
 
     }
 

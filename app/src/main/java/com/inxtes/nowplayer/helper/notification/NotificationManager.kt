@@ -45,6 +45,9 @@ class NotificationManager (val sessionToken:MediaSessionCompat.Token, private va
 //            setSubText(description.title)
 
             setContentIntent(mediaController.sessionActivity)
+            setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            setSmallIcon(R.drawable.ic_baseline_music_note_24)
+            color = ContextCompat.getColor(service, androidx.appcompat.R.color.primary_dark_material_dark)
 
             setDeleteIntent(
                 MediaButtonReceiver.buildMediaButtonPendingIntent(
@@ -53,34 +56,26 @@ class NotificationManager (val sessionToken:MediaSessionCompat.Token, private va
                 )
             )
 
-            setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-
-            setSmallIcon(R.drawable.ic_baseline_music_note_24)
-            color = ContextCompat.getColor(service, androidx.appcompat.R.color.primary_dark_material_dark)
-
-            // Add a pause/play button
-             addAction( NotificationCompat.Action(
-                 if (mediaController.playbackState.state == PlaybackStateCompat.STATE_PLAYING)
-                     R.drawable.pause
-                 else
-                     R.drawable.play
-                 ,
-                 service.getString(R.string.pause_play),
-                 MediaButtonReceiver.buildMediaButtonPendingIntent(
-                     service,
-                     PlaybackStateCompat.ACTION_PLAY_PAUSE
-                 )
-             ))
+//            // Add a pause/play button
+//             addAction( NotificationCompat.Action(
+//                    0
+//                 ,
+//                 service.getString(R.string.pause_play),
+//                 MediaButtonReceiver.buildMediaButtonPendingIntent(
+//                     service,
+//                     PlaybackStateCompat.ACTION_PLAY_PAUSE
+//                 )
+//             ))
 
             //TODO next skip
-            addAction( NotificationCompat.Action(
-                R.drawable.ic_baseline_next_24,
-                service.getString(R.string.play),
-                MediaButtonReceiver.buildMediaButtonPendingIntent(
-                    service,
-                    PlaybackStateCompat.ACTION_SKIP_TO_NEXT
-                )
-            ))
+//            addAction( NotificationCompat.Action(
+//                R.drawable.ic_baseline_next_24,
+//                service.getString(R.string.play),
+//                MediaButtonReceiver.buildMediaButtonPendingIntent(
+//                    service,
+//                    PlaybackStateCompat.ACTION_SKIP_TO_NEXT
+//                )
+//            ))
 
             setStyle(androidx.media.app.NotificationCompat.MediaStyle()
                 .setMediaSession(sessionToken)
@@ -95,19 +90,6 @@ class NotificationManager (val sessionToken:MediaSessionCompat.Token, private va
             )
         }
         service.startForeground(10, notificationBuilder.build())
-
-    }
-
-    private fun changeNotificationInfo(){
-        val mediaMetadata = mediaController.metadata
-        val description = mediaMetadata.description
-
-        notificationBuilder.apply {
-            setContentTitle(description?.title)
-            setSubText(description?.description)
-
-            setContentIntent(mediaController.sessionActivity)
-        }
 
     }
 
