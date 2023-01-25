@@ -8,17 +8,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
-import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
-import com.inxtes.nowplayer.App
 import com.inxtes.nowplayer.R
-import com.inxtes.nowplayer.bean.Music
 import com.inxtes.nowplayer.provider.MusicProvider
 import com.inxtes.nowplayer.ui.activity.MainActivity
 
 class MusicAdapter(private val context:MainActivity) : RecyclerView.Adapter<MusicAdapter.ViewHolder>() {
     private val TAG = this::class.simpleName
-    private var dataList:MutableList<MediaBrowserCompat.MediaItem> = MusicProvider.requestMusic(context)
+    private var dataList:MutableList<MediaBrowserCompat.MediaItem> = MusicProvider().requestMusic(context)
 
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val musicImage:ImageView = view.findViewById<ImageView>(R.id.music_image)

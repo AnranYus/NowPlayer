@@ -11,7 +11,7 @@ import android.support.v4.media.MediaDescriptionCompat
 import android.util.Log
 
 
-object MusicProvider {
+class MusicProvider {
     val TAG = this::class.simpleName
 
     fun requestMusic(context:Context): MutableList<MediaBrowserCompat.MediaItem>{
@@ -48,7 +48,7 @@ object MusicProvider {
                     putLong("duration",duration)
                     putString("artist",artist)
                 }
-
+//                val item = MediaItem.fromUri(path)
                 val item =  MediaBrowserCompat.MediaItem(
                     MediaDescriptionCompat.Builder()
                         .setMediaId(id)

@@ -4,31 +4,17 @@ import android.support.v4.media.MediaBrowserCompat
 import com.inxtes.nowplayer.App
 import com.inxtes.nowplayer.provider.MusicProvider
 
-class PlayQueue(order:Int = DEFAULT) {
-    companion object{
-        val DEFAULT = 1
+class PlayQueue {
+    var headPosition = -1
+
+    val totalQueue : MutableList<MediaBrowserCompat.MediaItem> = MusicProvider().requestMusic(App.context)
+
+    val recentPlayQueue : MutableList<MediaBrowserCompat.MediaItem> = mutableListOf()
+
+    fun getTotalQueueHeadItem(): MediaBrowserCompat.MediaItem {
+        headPosition++
+        return totalQueue[headPosition]
     }
-
-    private var queue : MutableList<MediaBrowserCompat.MediaItem> = MusicProvider.requestMusic(App.context)
-
-    var headPosition :Int = 0
-
-    fun getHeadItem():MediaBrowserCompat.MediaItem?{
-        return if (headPosition < queue.size) {
-
-            val item = queue[headPosition]
-            item
-
-        }else{
-            null
-        }
-
-    }
-
-
-
-
-
 
 
 }
