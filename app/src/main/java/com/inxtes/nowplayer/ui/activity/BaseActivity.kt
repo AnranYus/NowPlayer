@@ -14,9 +14,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowCompat
 import com.inxtes.nowplayer.service.MusicService
+import com.inxtes.nowplayer.service.PlayQueue
+import com.inxtes.nowplayer.utils.ExtUtil.toMediaItem
+import com.inxtes.nowplayer.utils.ExtUtil.toMediaMetadata
 import com.inxtes.nowplayer.utils.PermissionUtil
 
 open class BaseActivity:AppCompatActivity() {
+    companion object{
+        const val PLAYER_CONFIG= "player_config"
+        const val PLAY_SEEK_POSITION = "play_seek_position"
+        const val PLAY_QUEUE_POSITION = "play_queue_position"
+    }
+
     var haveAllPermission = false
     lateinit var musicBinder: MusicService.MusicBinder
 
@@ -51,10 +60,17 @@ open class BaseActivity:AppCompatActivity() {
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             musicBinder = service as MusicService.MusicBinder
+            getSharedPreferences(PLAYER_CONFIG, MODE_PRIVATE).apply {
+                val item = PlayQueue.getItemIndex(getInt(PLAY_QUEUE_POSITION,
+                    -1))?.toMediaMetadata()?.toMediaItem()
+                if (item != null){
+                    musicBinder.service.player.setMediaItem(item)
+                    musicBinder.service.player.seekTo(getLong(PLAY_SEEK_POSITION,0))
+                }
+            }
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-            TODO("Not yet implemented")
         }
 
     }

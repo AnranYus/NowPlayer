@@ -11,5 +11,7 @@
     <string name="reply_title">Default reply action</string>
     <string name="pause_play">Pause/Play</string>
     <string name="play">Play</string>
+    <string name="notification_channel">Player</string>
+    <string name="notification_channel_description">Playback service</string>
 
 </resources>

@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    android:orientation="vertical"
+<LinearLayout android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Hello world"/>
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -19,14 +15,23 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_weight="2"
-        android:id="@+id/control_player">
-        <androidx.appcompat.widget.AppCompatSeekBar
-            android:id="@+id/music_pro"
+        android:layout_height="wrap_content"
+        android:layout_weight="2">
+        <com.google.android.exoplayer2.ui.StyledPlayerControlView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
+            android:layout_height="match_parent"
+            android:layout_marginBottom="?attr/actionBarSize"
+            app:show_timeout="0"
+            android:id="@+id/player_control"/>
+<!--        <com.inxtes.nowplayer.ui.view.PlayerControlView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:id="@+id/player_control"/>-->
+<!--        <com.google.android.exoplayer2.ui.PlayerControlView-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:background="?attr/cardBackgroundColor"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/player_control"/>-->
     </FrameLayout>
 
 </LinearLayout>
